@@ -1,4 +1,16 @@
-<script setup></script>
+<script setup>
+import useLogout from '@/composables/useLogout'
+import { useRouter } from 'vue-router'
+
+const { logout } = useLogout()
+const router = useRouter()
+
+const handleClick = async () => {
+  await logout()
+  console.log('user logged out')
+  router.push({ name: 'Login' })
+}
+</script>
 
 <template>
   <div class="navbar">
@@ -6,7 +18,7 @@
       <img src="@/assets/weirdchicken.png" alt="avatar" />
       <h1><RouterLink :to="{ name: 'Home' }">Playlist Project</RouterLink></h1>
       <div class="links">
-        <button>Logout</button>
+        <button @click="handleClick">Logout</button>
         <RouterLink class="btn" :to="{ name: 'Signup' }">Sign up</RouterLink>
         <RouterLink class="btn" :to="{ name: 'Login' }">Log in</RouterLink>
       </div>
