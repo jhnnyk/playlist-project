@@ -1,9 +1,11 @@
 <script setup>
+import getUser from '@/composables/getUser'
 import useLogout from '@/composables/useLogout'
 import { useRouter } from 'vue-router'
 
 const { logout } = useLogout()
 const router = useRouter()
+const { user } = getUser()
 
 const handleClick = async () => {
   await logout()
@@ -18,9 +20,13 @@ const handleClick = async () => {
       <img src="@/assets/weirdchicken.png" alt="avatar" />
       <h1><RouterLink :to="{ name: 'Home' }">Playlist Project</RouterLink></h1>
       <div class="links">
-        <button @click="handleClick">Logout</button>
-        <RouterLink class="btn" :to="{ name: 'Signup' }">Sign up</RouterLink>
-        <RouterLink class="btn" :to="{ name: 'Login' }">Log in</RouterLink>
+        <div v-if="user">
+          <button @click="handleClick">Logout</button>
+        </div>
+        <div v-else>
+          <RouterLink class="btn" :to="{ name: 'Signup' }">Sign up</RouterLink>
+          <RouterLink class="btn" :to="{ name: 'Login' }">Log in</RouterLink>
+        </div>
       </div>
     </nav>
   </div>

@@ -34,6 +34,6 @@ const handleSubmit = async () => {
     />
     <div v-if="error" class="error">{{ error }}</div>
     <button v-if="!isPending">Sign up</button>
-    <button v-if="isPending" disabled>Loading</button>
+    <button v-if="isPending" disabled>Loading...</button>
   </form>
 </template>
