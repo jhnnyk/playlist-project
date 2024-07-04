@@ -1,17 +1,37 @@
 <script setup>
 import useStorage from '@/composables/useStorage'
+import useCollection from '@/composables/useCollection'
+import getUser from '@/composables/getUser'
+import { timestamp } from '@/firebase/config'
 
 const { filePath, url, uploadImage } = useStorage()
+const { error, addItemtoDB } = useCollection('playlists')
+const { user } = getUser()
 
 const title = defineModel('title')
 const description = defineModel('description')
 const file = defineModel('file')
 const fileError = defineModel('fileError')
+const isPending = defineModel('isPending', { default: false })
 
 const handleSubmit = async () => {
   if (file.value) {
+    isPending.value = true
     await uploadImage(file.value)
-    console.log('image uploaded, url: ', url.value)
+    await addItemtoDB({
+      title: title.value,
+      description: description.value,
+      userId: user.value.uid,
+      userName: user.value.displayName,
+      coverUrl: url.value,
+      filePath: filePath.value,
+      songs: [],
+      createdAt: timestamp
+    })
+    isPending.value = false
+    if (!error.value) {
+      console.log('playlist added!')
+    }
   }
 }
 
@@ -47,7 +67,8 @@ const handleChange = (e) => {
     <input type="file" id="file" @change="handleChange" />
     <div class="error">{{ fileError }}</div>
     <div class="error"></div>
-    <button>Create</button>
+    <button v-if="!isPending">Create</button>
+    <button v-else disabled>Saving...</button>
   </form>
 </template>
 
