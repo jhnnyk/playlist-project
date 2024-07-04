@@ -21,6 +21,7 @@ const handleClick = async () => {
       <h1><RouterLink :to="{ name: 'Home' }">Playlist Project</RouterLink></h1>
       <div class="links">
         <div v-if="user">
+          <RouterLink :to="{ name: 'CreatePlaylist' }">Create Playlist</RouterLink>
           <button @click="handleClick">Logout</button>
         </div>
         <div v-else>
