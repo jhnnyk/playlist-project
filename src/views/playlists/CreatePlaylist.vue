@@ -1,9 +1,29 @@
 <script setup>
 const title = defineModel('title')
 const description = defineModel('description')
+const file = defineModel('file')
+const fileError = defineModel('fileError')
 
 const handleSubmit = () => {
-  console.log(title.value, description.value)
+  if (file.value) {
+    console.log(title.value, description.value, file.value)
+  }
+}
+
+// allowed file types
+const types = ['image/png', 'image/jpeg']
+
+const handleChange = (e) => {
+  const selected = e.target.files[0]
+  console.log(selected)
+
+  if (selected && types.includes(selected.type)) {
+    file.value = selected
+    fileError.value = null
+  } else {
+    file.value = null
+    fileError.value = 'Please select an image file (png or jpg)'
+  }
 }
 </script>
 
@@ -19,7 +39,8 @@ const handleSubmit = () => {
     ></textarea>
     <!-- upload playlist image -->
     <label for="file">Upload playlist cover image</label>
-    <input type="file" id="file" />
+    <input type="file" id="file" @change="handleChange" />
+    <div class="error">{{ fileError }}</div>
     <div class="error"></div>
     <button>Create</button>
   </form>
