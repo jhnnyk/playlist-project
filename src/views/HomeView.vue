@@ -1,5 +1,6 @@
 <script setup>
 import getCollection from '@/composables/getCollection'
+import ListView from '@/components/ListView.vue'
 
 const { error, documents } = getCollection('playlists')
 </script>
@@ -8,9 +9,7 @@ const { error, documents } = getCollection('playlists')
   <div class="home">
     <div v-if="error" class="error">Could not fetch the data</div>
     <div v-if="documents">
-      <div v-for="doc in documents" :key="doc.id">
-        {{ doc.title }}
-      </div>
+      <ListView v-bind:playlists="documents" />
     </div>
   </div>
 </template>
