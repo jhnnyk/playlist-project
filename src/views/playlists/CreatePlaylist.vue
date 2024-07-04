@@ -1,12 +1,17 @@
 <script setup>
+import useStorage from '@/composables/useStorage'
+
+const { filePath, url, uploadImage } = useStorage()
+
 const title = defineModel('title')
 const description = defineModel('description')
 const file = defineModel('file')
 const fileError = defineModel('fileError')
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (file.value) {
-    console.log(title.value, description.value, file.value)
+    await uploadImage(file.value)
+    console.log('image uploaded, url: ', url.value)
   }
 }
 
