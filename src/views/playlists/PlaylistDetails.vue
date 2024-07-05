@@ -1,9 +1,16 @@
 <script setup>
 import getDocument from '@/composables/getDocument'
+import getUser from '@/composables/getUser'
+import { computed } from 'vue'
 
 const props = defineProps({ id: String })
 
 const { error, document: playlist } = getDocument('playlists', props.id)
+const { user } = getUser()
+
+const ownership = computed(() => {
+  return playlist.value && user.value && user.value.uid == playlist.value.userId
+})
 </script>
 
 <template>
@@ -17,6 +24,7 @@ const { error, document: playlist } = getDocument('playlists', props.id)
       <h2>{{ playlist.title }}</h2>
       <p class="username">Created by {{ playlist.userName }}</p>
       <p class="description">{{ playlist.description }}</p>
+      <button v-if="ownership">Delete Playlist</button>
     </div>
 
     <!-- song list -->
