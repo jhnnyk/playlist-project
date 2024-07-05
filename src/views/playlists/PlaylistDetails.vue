@@ -11,7 +11,7 @@ const props = defineProps({ id: String })
 
 const { error, document: playlist } = getDocument('playlists', props.id)
 const { user } = getUser()
-const { deleteDocument } = useDocument('playlists', props.id)
+const { deleteDocument, updateDocument } = useDocument('playlists', props.id)
 const { deleteImage } = useStorage()
 const router = useRouter()
 
@@ -23,6 +23,11 @@ const handleDelete = async () => {
   await deleteImage(playlist.value.filePath)
   await deleteDocument()
   router.push({ name: 'Home' })
+}
+
+const handleClick = async (id) => {
+  const newSongList = playlist.value.songs.filter((song) => song.id != id)
+  await updateDocument({ songs: newSongList })
 }
 </script>
 
@@ -48,7 +53,7 @@ const handleDelete = async () => {
           <h3>{{ song.title }}</h3>
           <p>{{ song.artist }}</p>
         </div>
-        <button v-if="ownership">delete</button>
+        <button v-if="ownership" @click="handleClick(song.id)">delete</button>
       </div>
       <AddSong v-if="ownership" :playlist="playlist" />
     </div>
