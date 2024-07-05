@@ -3,10 +3,12 @@ import useStorage from '@/composables/useStorage'
 import useCollection from '@/composables/useCollection'
 import getUser from '@/composables/getUser'
 import { timestamp } from '@/firebase/config'
+import { useRouter } from 'vue-router'
 
 const { filePath, url, uploadImage } = useStorage()
 const { error, addItemtoDB } = useCollection('playlists')
 const { user } = getUser()
+const router = useRouter()
 
 const title = defineModel('title')
 const description = defineModel('description')
@@ -18,7 +20,7 @@ const handleSubmit = async () => {
   if (file.value) {
     isPending.value = true
     await uploadImage(file.value)
-    await addItemtoDB({
+    const res = await addItemtoDB({
       title: title.value,
       description: description.value,
       userId: user.value.uid,
@@ -30,7 +32,7 @@ const handleSubmit = async () => {
     })
     isPending.value = false
     if (!error.value) {
-      console.log('playlist added!')
+      router.push({ name: 'PlaylistDetails', params: { id: res.id } })
     }
   }
 }
