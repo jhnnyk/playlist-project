@@ -1,21 +1,27 @@
 <script setup>
+import useStorage from '@/composables/useStorage'
 import useDocument from '@/composables/useDocument'
 import getDocument from '@/composables/getDocument'
 import getUser from '@/composables/getUser'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({ id: String })
 
 const { error, document: playlist } = getDocument('playlists', props.id)
 const { user } = getUser()
 const { deleteDocument } = useDocument('playlists', props.id)
+const { deleteImage } = useStorage()
+const router = useRouter()
 
 const ownership = computed(() => {
   return playlist.value && user.value && user.value.uid == playlist.value.userId
 })
 
 const handleDelete = async () => {
+  await deleteImage(playlist.value.filePath)
   await deleteDocument()
+  router.push({ name: 'Home' })
 }
 </script>
 

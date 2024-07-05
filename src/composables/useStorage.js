@@ -1,7 +1,7 @@
 import { storage } from '@/firebase/config'
 import { ref } from 'vue'
 import getUser from './getUser'
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 
 const { user } = getUser()
 
@@ -23,7 +23,18 @@ const useStorage = () => {
     }
   }
 
-  return { url, filePath, error, uploadImage }
+  const deleteImage = async (path) => {
+    const imageStorageRef = storageRef(storage, path)
+
+    try {
+      await deleteObject(imageStorageRef)
+    } catch (err) {
+      console.log(err.message)
+      error.value = err.message
+    }
+  }
+
+  return { url, filePath, error, uploadImage, deleteImage }
 }
 
 export default useStorage
