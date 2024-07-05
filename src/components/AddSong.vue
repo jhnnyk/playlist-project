@@ -1,4 +1,8 @@
 <script setup>
+import useDocument from '@/composables/useDocument'
+
+const props = defineProps({ playlist: Object })
+const { updateDocument } = useDocument('playlists', props.playlist.id)
 const title = defineModel('title')
 const artist = defineModel('artist')
 const showForm = defineModel('showForm', { default: false })
@@ -9,7 +13,11 @@ const handleSubmit = async () => {
     artist: artist.value,
     id: Math.floor(Math.random() * 1000000)
   }
-  console.log(newSong)
+  await updateDocument({
+    songs: [...props.playlist.songs, newSong]
+  })
+  title.value = ''
+  artist.value = ''
 }
 </script>
 

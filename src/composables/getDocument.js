@@ -8,9 +8,9 @@ const getDocument = (collectionName, id) => {
 
   const unsub = onSnapshot(
     doc(db, collectionName, id),
-    (doc) => {
-      if (doc.data()) {
-        document.value = { ...doc.data(), id: doc.id }
+    (_doc) => {
+      if (_doc.data()) {
+        document.value = { ..._doc.data(), id: _doc.id }
         error.value = null
       } else {
         error.value = 'that document does not exist'
