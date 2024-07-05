@@ -23,6 +23,7 @@ const handleClick = async () => {
         <div v-if="user">
           <RouterLink :to="{ name: 'CreatePlaylist' }">Create Playlist</RouterLink>
           <RouterLink :to="{ name: 'UserPlaylists' }">My Playlists</RouterLink>
+          <span>Hi there, {{ user.displayName }}</span>
           <button @click="handleClick">Logout</button>
         </div>
         <div v-else>
@@ -64,5 +65,13 @@ button {
 
 nav img {
   max-height: 60px;
+}
+
+span {
+  font-size: 14px;
+  display: inline-block;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid #eee;
 }
 </style>
