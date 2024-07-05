@@ -1,7 +1,5 @@
 <script setup>
-defineProps({
-  playlists: Array
-})
+defineProps({ playlists: Array })
 </script>
 
 <template>
