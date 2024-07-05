@@ -42,7 +42,14 @@ const handleDelete = async () => {
 
     <!-- song list -->
     <div class="song-list">
-      <p>song list here</p>
+      <div v-if="!playlist.songs.length">No songs have been added to this playlist yet.</div>
+      <div v-for="song in playlist.songs" :key="song.id" class="single-song">
+        <div class="details">
+          <h3>{{ song.title }}</h3>
+          <p>{{ song.artist }}</p>
+        </div>
+        <button v-if="ownership">delete</button>
+      </div>
       <AddSong v-if="ownership" :playlist="playlist" />
     </div>
   </div>
@@ -93,5 +100,14 @@ const handleDelete = async () => {
 
 .description {
   text-align: left;
+}
+
+.single-song {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--secondary);
+  margin-bottom: 20px;
 }
 </style>
